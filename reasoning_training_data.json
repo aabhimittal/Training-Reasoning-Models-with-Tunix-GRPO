@@ -1,0 +1,423 @@
+[
+  {
+    "question": "What is 15% of 240? Let's think step by step.",
+    "answer": "36",
+    "type": "math",
+    "difficulty": "easy",
+    "domain": "arithmetic",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["percentage", "multiplication"]
+    }
+  },
+  {
+    "question": "A train travels 120 km in 2 hours. If it continues at the same speed, how far will it travel in 5 hours? Think through this carefully.",
+    "answer": "300 km",
+    "type": "math",
+    "difficulty": "medium",
+    "domain": "algebra",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["distance", "rate", "time"]
+    }
+  },
+  {
+    "question": "If f(x) = 3x^2 + 2x - 5, what is f(3)? Show your work.",
+    "answer": "28",
+    "type": "math",
+    "difficulty": "medium",
+    "domain": "functions",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["function", "substitution", "algebra"]
+    }
+  },
+  {
+    "question": "A rectangular garden is 12 meters long and 8 meters wide. What is its perimeter? Explain your reasoning.",
+    "answer": "40 meters",
+    "type": "math",
+    "difficulty": "easy",
+    "domain": "geometry",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["perimeter", "rectangle", "geometry"]
+    }
+  },
+  {
+    "question": "Solve for x: 3x + 7 = 22. Let's work through this step by step.",
+    "answer": "x = 5",
+    "type": "math",
+    "difficulty": "easy",
+    "domain": "algebra",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["linear equation", "solving", "algebra"]
+    }
+  },
+  {
+    "question": "Calculate 25% of 360. Show each step of your reasoning.",
+    "answer": "90",
+    "type": "math",
+    "difficulty": "easy",
+    "domain": "arithmetic",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["percentage", "calculation"]
+    }
+  },
+  {
+    "question": "If 5 apples cost $3.75, how much do 12 apples cost at the same rate? Explain your method.",
+    "answer": "$9.00",
+    "type": "math",
+    "difficulty": "medium",
+    "domain": "proportions",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["proportion", "unit rate", "word problem"]
+    }
+  },
+  {
+    "question": "What is the area of a circle with radius 7 cm? Use π ≈ 3.14 and show your calculation.",
+    "answer": "153.86 square cm",
+    "type": "math",
+    "difficulty": "medium",
+    "domain": "geometry",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["circle", "area", "geometry"]
+    }
+  },
+  {
+    "question": "Simplify: 2(x + 3) - 4(x - 1). Show each step.",
+    "answer": "-2x + 10",
+    "type": "math",
+    "difficulty": "medium",
+    "domain": "algebra",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["simplification", "distributive property"]
+    }
+  },
+  {
+    "question": "A car depreciates 15% each year. If it's worth $20,000 now, what will it be worth in 2 years? Explain your reasoning.",
+    "answer": "$14,450",
+    "type": "math",
+    "difficulty": "hard",
+    "domain": "exponential",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["depreciation", "percentage", "compound"]
+    }
+  },
+  {
+    "question": "What does this Python code output: `print([x**2 for x in range(5)])`? Trace through the execution.",
+    "answer": "[0, 1, 4, 9, 16]",
+    "type": "code",
+    "difficulty": "easy",
+    "domain": "python",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["list comprehension", "python", "squares"]
+    }
+  },
+  {
+    "question": "Debug this code: `for i in range(10): if i % 2 = 0: print(i)`. What's wrong and what's the fix?",
+    "answer": "Use == instead of = for comparison. Fixed: if i % 2 == 0:",
+    "type": "code",
+    "difficulty": "easy",
+    "domain": "debugging",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["debugging", "syntax error", "python"]
+    }
+  },
+  {
+    "question": "What's the time complexity of binary search? Explain why.",
+    "answer": "O(log n) because the search space is halved with each iteration",
+    "type": "code",
+    "difficulty": "medium",
+    "domain": "algorithms",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["time complexity", "binary search", "algorithms"]
+    }
+  },
+  {
+    "question": "Write pseudocode for finding the maximum element in an unsorted array. Explain your approach.",
+    "answer": "Initialize max = array[0]. For each element, if element > max, set max = element. Return max.",
+    "type": "code",
+    "difficulty": "easy",
+    "domain": "algorithms",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["maximum", "array", "algorithm"]
+    }
+  },
+  {
+    "question": "What does this JavaScript code return: `['1', '2', '3'].map(parseInt)`? Explain the unexpected behavior.",
+    "answer": "[1, NaN, NaN] because map passes index as second argument to parseInt, which treats it as radix",
+    "type": "code",
+    "difficulty": "hard",
+    "domain": "javascript",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["javascript", "map", "parseInt", "quirks"]
+    }
+  },
+  {
+    "question": "Explain the difference between `==` and `===` in JavaScript with examples.",
+    "answer": "== does type coercion (5 == '5' is true), === requires same type and value (5 === '5' is false)",
+    "type": "code",
+    "difficulty": "medium",
+    "domain": "javascript",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["javascript", "comparison", "operators"]
+    }
+  },
+  {
+    "question": "What is a stack overflow error and how does it occur? Provide an example.",
+    "answer": "Occurs when call stack exceeds its limit, typically from infinite recursion. Example: function f() { f(); }",
+    "type": "code",
+    "difficulty": "medium",
+    "domain": "computer_science",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["stack overflow", "recursion", "memory"]
+    }
+  },
+  {
+    "question": "Why does ice float on water? Explain the molecular reasoning.",
+    "answer": "Ice is less dense than water because water molecules form a crystalline structure with more space between molecules when frozen, despite being solid",
+    "type": "science",
+    "difficulty": "medium",
+    "domain": "chemistry",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["density", "molecular structure", "states of matter"]
+    }
+  },
+  {
+    "question": "If you drop a feather and a hammer on the Moon, which hits the ground first? Why?",
+    "answer": "They hit at the same time because there's no air resistance on the Moon, only gravity affects both equally",
+    "type": "science",
+    "difficulty": "easy",
+    "domain": "physics",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["gravity", "air resistance", "moon"]
+    }
+  },
+  {
+    "question": "Explain why the sky appears blue during the day. Use principles of light scattering.",
+    "answer": "Rayleigh scattering causes shorter wavelengths (blue) to scatter more than longer wavelengths (red) in the atmosphere, making the sky appear blue",
+    "type": "science",
+    "difficulty": "medium",
+    "domain": "physics",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["light", "scattering", "wavelength"]
+    }
+  },
+  {
+    "question": "What is photosynthesis and why is it important for life on Earth? Explain the process.",
+    "answer": "Photosynthesis converts CO2 and water into glucose and oxygen using sunlight. It's vital because it produces oxygen and is the base of most food chains",
+    "type": "science",
+    "difficulty": "medium",
+    "domain": "biology",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["photosynthesis", "plants", "oxygen"]
+    }
+  },
+  {
+    "question": "Why does salt lower the freezing point of water? Explain at the molecular level.",
+    "answer": "Salt disrupts ice crystal formation by interfering with hydrogen bonding between water molecules, requiring lower temperature to freeze",
+    "type": "science",
+    "difficulty": "hard",
+    "domain": "chemistry",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["freezing point depression", "chemistry", "solutions"]
+    }
+  },
+  {
+    "question": "A farmer needs to cross a river with a fox, a chicken, and grain. The boat holds only the farmer and one item. If left alone, the fox eats the chicken, and the chicken eats the grain. How does the farmer get everything across?",
+    "answer": "1) Take chicken across, 2) Return alone, 3) Take fox across, 4) Return with chicken, 5) Take grain across, 6) Return alone, 7) Take chicken across",
+    "type": "logic_puzzle",
+    "difficulty": "hard",
+    "domain": "constraint_satisfaction",
+    "metadata": {
+      "source": "classic_puzzle",
+      "verification": "verifiable",
+      "keywords": ["river crossing", "constraints", "logic"]
+    }
+  },
+  {
+    "question": "If all bloops are razzies and all razzies are lazzies, are all bloops definitely lazzies? Explain your logical reasoning.",
+    "answer": "Yes, by transitive property: bloops → razzies → lazzies, therefore bloops → lazzies",
+    "type": "logic_puzzle",
+    "difficulty": "medium",
+    "domain": "logic",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "verifiable",
+      "keywords": ["syllogism", "logic", "transitivity"]
+    }
+  },
+  {
+    "question": "You have 8 balls, one slightly heavier. You have a balance scale. What's the minimum number of weighings to find the heavy ball? Explain your strategy.",
+    "answer": "2 weighings. Divide into 3-3-2, weigh first two groups. If balanced, heavy is in remaining 2 (1 more weighing). If unbalanced, divide heavier group of 3 into 1-1-1 and weigh two",
+    "type": "logic_puzzle",
+    "difficulty": "hard",
+    "domain": "optimization",
+    "metadata": {
+      "source": "classic_puzzle",
+      "verification": "verifiable",
+      "keywords": ["optimization", "strategy", "weighing"]
+    }
+  },
+  {
+    "question": "Three light switches are in one room, three light bulbs in another. You can only enter the bulb room once. How do you determine which switch controls which bulb?",
+    "answer": "Turn on switch 1 for 5 minutes, turn off, turn on switch 2, go to room. Lit bulb = switch 2, warm off bulb = switch 1, cold off bulb = switch 3",
+    "type": "logic_puzzle",
+    "difficulty": "hard",
+    "domain": "problem_solving",
+    "metadata": {
+      "source": "classic_puzzle",
+      "verification": "verifiable",
+      "keywords": ["deduction", "creative thinking"]
+    }
+  },
+  {
+    "question": "You're in a room with two doors. One leads to freedom, one to danger. Two guards: one always lies, one always tells truth. You don't know which is which. You can ask ONE question to ONE guard. What do you ask?",
+    "answer": "Ask either guard: 'If I asked the other guard which door leads to freedom, what would they say?' Then choose the opposite door",
+    "type": "logic_puzzle",
+    "difficulty": "hard",
+    "domain": "logic",
+    "metadata": {
+      "source": "classic_puzzle",
+      "verification": "verifiable",
+      "keywords": ["logic", "truth", "lies"]
+    }
+  },
+  {
+    "question": "Write a creative opening paragraph for a story about a world where dreams are traded as currency. Show your creative reasoning process.",
+    "answer": "In the Oneiroi Exchange, Maya clutched her last vial of midnight blue essence—a recurring dream of flying through crystal caverns that had sustained her for weeks. Tomorrow, if she couldn't harvest something new, she'd join the Dreamless in the gray districts below.",
+    "type": "creative_writing",
+    "difficulty": "medium",
+    "domain": "fiction",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "non_verifiable",
+      "keywords": ["creative writing", "world-building", "opening"]
+    }
+  },
+  {
+    "question": "Create a metaphor that explains climate change to a child. Explain your creative choices.",
+    "answer": "Earth is like a blanket fort. We're adding too many blankets (greenhouse gases), making it too hot inside. We need to remove some blankets so it's comfortable again.",
+    "type": "creative_writing",
+    "difficulty": "medium",
+    "domain": "metaphor",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "non_verifiable",
+      "keywords": ["metaphor", "explanation", "climate"]
+    }
+  },
+  {
+    "question": "Invent a new sport that combines elements of chess and basketball. Describe the basic rules and explain your reasoning.",
+    "answer": "ChessHoop: 5v5 game where teams must solve chess puzzles to unlock shooting opportunities. Each solved puzzle grants one shot. First team to 21 points wins. Combines strategic thinking with athletic skill.",
+    "type": "creative_ideation",
+    "difficulty": "hard",
+    "domain": "innovation",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "non_verifiable",
+      "keywords": ["innovation", "game design", "hybrid"]
+    }
+  },
+  {
+    "question": "Brainstorm three creative uses for a brick besides construction. Explain the reasoning behind each.",
+    "answer": "1) Doorstop (heavy and stable), 2) Exercise weight (portable resistance), 3) Art canvas (interesting texture for painting). Each leverages brick's physical properties creatively.",
+    "type": "creative_ideation",
+    "difficulty": "easy",
+    "domain": "lateral_thinking",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "non_verifiable",
+      "keywords": ["brainstorming", "creative uses"]
+    }
+  },
+  {
+    "question": "Design a mobile app that helps people reduce food waste. Explain your key features and the reasoning behind them.",
+    "answer": "FreshKeeper app: 1) Expiration tracker with notifications, 2) Recipe suggester using soon-to-expire ingredients, 3) Portion calculator to prevent over-buying. Addresses main causes of waste: forgetting about food, not knowing what to cook, buying too much.",
+    "type": "creative_ideation",
+    "difficulty": "hard",
+    "domain": "product_design",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "non_verifiable",
+      "keywords": ["app design", "sustainability", "features"]
+    }
+  },
+  {
+    "question": "Summarize the following in simple terms: 'Artificial intelligence systems utilize machine learning algorithms to identify patterns in large datasets, enabling predictive analytics and automated decision-making processes.' Show your reasoning for what to emphasize.",
+    "answer": "AI learns from data to predict outcomes and make decisions automatically. Key points: learning from data, prediction, automation.",
+    "type": "summarization",
+    "difficulty": "easy",
+    "domain": "comprehension",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "non_verifiable",
+      "keywords": ["summarization", "simplification", "AI"]
+    }
+  },
+  {
+    "question": "Condense this abstract to one sentence: 'This study examines the correlation between sleep duration and cognitive performance in adults aged 25-45. Results indicate that 7-8 hours of sleep correlates with optimal performance, while less than 6 or more than 9 hours shows decreased cognitive function.' Explain your key message selection.",
+    "answer": "Adults aged 25-45 perform best cognitively with 7-8 hours of sleep, with performance declining at other durations. Focus on main finding: optimal sleep range and its effect.",
+    "type": "summarization",
+    "difficulty": "medium",
+    "domain": "academic",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "non_verifiable",
+      "keywords": ["summarization", "research", "key findings"]
+    }
+  },
+  {
+    "question": "Extract the three most important points from: 'Renewable energy sources like solar and wind are becoming more cost-effective. Battery storage technology has improved significantly. Government policies increasingly favor clean energy. However, infrastructure challenges remain. Fossil fuel industries resist transition. Public education about benefits is needed.' Explain your selection reasoning.",
+    "answer": "1) Renewables are cost-competitive, 2) Storage tech has improved, 3) Infrastructure challenges persist. These cover current state (tech readiness), progress (storage), and remaining barriers (infrastructure).",
+    "type": "summarization",
+    "difficulty": "medium",
+    "domain": "extraction",
+    "metadata": {
+      "source": "human_authored",
+      "verification": "non_verifiable",
+      "keywords": ["key points", "extraction", "prioritization"]
+    }
+  }
+]
+
