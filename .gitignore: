@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+
+# Jupyter
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# Data and checkpoints (too large)
+checkpoints/*.ckpt
+data/
+*.h5
+*.pkl
+
+# Kaggle
+kaggle.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
