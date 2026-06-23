@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed (breaking)
+- **Replaced the mock training notebook with a real, fully-wired Tunix GRPO
+  loop.** `tunix_reasoning_trainer.ipynb` now uses Tunix's `RLCluster` and
+  `GRPOLearner` to actually update Gemma 3 1B LoRA weights, runs on a free-tier
+  Google Colab accelerator (T4 GPU or TPU), and supports both GSM8K (default)
+  and this project's own dataset via a `DATASET` toggle. Its reward functions
+  reuse `reasoning_rewards.py` so the notebook and tests share one
+  implementation.
+- Retargeted the project from Gemma 2 2B (Keras/Kaggle scaffold) to
+  Gemma 3 1B-IT (Tunix/JAX), and updated `requirements.txt` and the README
+  accordingly.
+
 ### Added
 - `reasoning_rewards.py`: dependency-free, documented, and unit-tested
   implementation of the format / correctness / reasoning-quality reward
