@@ -1,0 +1,5 @@
+# Development dependencies (linting + tests).
+# The code under test is dependency-free, so this file is all you need to
+# run `make test` and `make lint` locally.
+pytest>=7.0
+ruff>=0.4.0

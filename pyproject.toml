@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tunix-reasoning-grpo"
+version = "0.1.0"
+description = "Train Gemma models to produce transparent, step-by-step reasoning using GRPO via Google's Tunix library."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Abhishek Mittal" }]
+requires-python = ">=3.8"
+keywords = ["grpo", "reasoning", "llm", "gemma", "tunix", "rlhf", "jax"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# The reward functions and data generator are dependency-free (standard
+# library only). Training dependencies (jax, keras, tunix, ...) live in
+# requirements.txt because they are environment-specific (TPU/GPU).
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "ruff>=0.4.0"]
+
+[project.urls]
+Homepage = "https://github.com/aabhimittal/Training-Reasoning-Models-with-Tunix-GRPO"
+Repository = "https://github.com/aabhimittal/Training-Reasoning-Models-with-Tunix-GRPO"
+
+[tool.setuptools]
+py-modules = ["reasoning_rewards", "generate_training_data"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+# The training notebook is illustrative demo code; don't enforce style on it.
+extend-exclude = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B"]
+ignore = ["E501"]

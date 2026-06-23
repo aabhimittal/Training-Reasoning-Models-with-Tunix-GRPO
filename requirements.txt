@@ -1,8 +1,30 @@
-jax[tpu]>=0.4.20
-flax>=0.7.5
-optax>=0.1.7
+# Dependencies for the GRPO training notebook (tunix_reasoning_trainer.ipynb).
+#
+# NOTE: The reward functions (reasoning_rewards.py) and the data generator
+# (generate_training_data.py) use only the Python standard library, so you do
+# NOT need to install anything to run or test those.
+#
+# These packages are only required for model training on accelerators.
+# On Kaggle/Colab TPU these are typically pre-installed.
+
+# JAX backend. Install the build that matches your hardware, e.g.:
+#   pip install "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
+#   pip install "jax[cuda12]"   # for NVIDIA GPUs
+#   pip install jax             # CPU-only (slow; for smoke tests)
+jax>=0.4.20
+
+# Model loading and the Gemma2 preset.
+keras>=3.0.0
+keras-nlp>=0.8.0
+
+# Numerics, progress bars, and plotting.
 numpy>=1.24.0
-pandas>=2.0.0
 matplotlib>=3.7.0
-seaborn>=0.12.0
 tqdm>=4.65.0
+
+# Kaggle model downloads (used inside the notebook).
+kagglehub>=0.2.0
+
+# GRPO trainer. Installed from source:
+#   pip install git+https://github.com/google/tunix.git
+# tunix @ git+https://github.com/google/tunix.git

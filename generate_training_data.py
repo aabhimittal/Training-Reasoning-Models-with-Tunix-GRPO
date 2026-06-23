@@ -10,11 +10,11 @@ Usage:
     python generate_training_data.py --count 1000 --output reasoning_training_data.json
 """
 
+import argparse
 import json
 import random
-import argparse
-from typing import List, Dict, Any
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
+from typing import Any, Dict, List
 
 # ==============================================================================
 # CONFIGURATION
@@ -37,14 +37,14 @@ class ExampleTemplate:
 
 class MathGenerator:
     """Generate mathematical reasoning problems."""
-    
+
     @staticmethod
     def generate_percentage_problem():
         """Generate percentage calculation problems."""
         percentage = random.choice([10, 15, 20, 25, 30, 40, 50, 75])
         number = random.choice([80, 120, 160, 200, 240, 360, 480, 600])
         answer = (percentage / 100) * number
-        
+
         return {
             "question": f"What is {percentage}% of {number}? Let's think step by step.",
             "answer": str(int(answer)) if answer.is_integer() else f"{answer:.2f}",
@@ -57,7 +57,7 @@ class MathGenerator:
                 "keywords": ["percentage", "multiplication"]
             }
         }
-    
+
     @staticmethod
     def generate_linear_equation():
         """Generate linear equation problems."""
@@ -65,7 +65,7 @@ class MathGenerator:
         b = random.randint(5, 20)
         result = random.randint(15, 50)
         x = (result - b) / a
-        
+
         if x.is_integer():
             return {
                 "question": f"Solve for x: {a}x + {b} = {result}. Show your work step by step.",
@@ -80,7 +80,7 @@ class MathGenerator:
                 }
             }
         return None
-    
+
     @staticmethod
     def generate_word_problem():
         """Generate word problems."""
@@ -104,10 +104,10 @@ class MathGenerator:
                 "unit": "km"
             }
         ]
-        
+
         scenario = random.choice(scenarios)
         distance = scenario['rate'] * scenario['time']
-        
+
         return {
             "question": f"{scenario['context']} at {scenario['rate']} {scenario['unit']}/hour for {scenario['time']} hours. How far does it travel? Explain your reasoning.",
             "answer": f"{distance} {scenario['unit']}",
@@ -120,7 +120,7 @@ class MathGenerator:
                 "keywords": ["distance", "rate", "time", "word problem"]
             }
         }
-    
+
     @staticmethod
     def generate_geometry_problem():
         """Generate geometry problems."""
@@ -130,24 +130,24 @@ class MathGenerator:
                 "property": "perimeter",
                 "length": random.randint(5, 20),
                 "width": random.randint(5, 15),
-                "formula": lambda l, w: 2 * (l + w)
+                "formula": lambda length, width: 2 * (length + width)
             },
             {
                 "name": "rectangle",
                 "property": "area",
                 "length": random.randint(5, 20),
                 "width": random.randint(5, 15),
-                "formula": lambda l, w: l * w
+                "formula": lambda length, width: length * width
             },
             {
                 "name": "square",
                 "property": "perimeter",
                 "length": random.randint(5, 15),
                 "width": None,
-                "formula": lambda l, w: 4 * l
+                "formula": lambda length, width: 4 * length
             }
         ]
-        
+
         shape = random.choice(shapes)
         if shape['width']:
             answer = shape['formula'](shape['length'], shape['width'])
@@ -155,7 +155,7 @@ class MathGenerator:
         else:
             answer = shape['formula'](shape['length'], None)
             question = f"A {shape['name']} has side length {shape['length']} meters. What is its {shape['property']}? Show your calculation."
-        
+
         return {
             "question": question,
             "answer": f"{answer} square meters" if shape['property'] == 'area' else f"{answer} meters",
@@ -168,20 +168,20 @@ class MathGenerator:
                 "keywords": ["geometry", shape['property'], shape['name']]
             }
         }
-    
+
     @staticmethod
     def generate_proportion_problem():
         """Generate proportion problems."""
         items = ["apples", "books", "pencils", "tickets", "cookies"]
         item = random.choice(items)
-        
+
         quantity1 = random.randint(3, 8)
         price1 = round(random.uniform(2.0, 8.0), 2)
         quantity2 = random.randint(10, 20)
-        
+
         unit_price = price1 / quantity1
         price2 = round(unit_price * quantity2, 2)
-        
+
         return {
             "question": f"If {quantity1} {item} cost ${price1:.2f}, how much do {quantity2} {item} cost at the same rate? Explain your method.",
             "answer": f"${price2:.2f}",
@@ -194,7 +194,7 @@ class MathGenerator:
                 "keywords": ["proportion", "unit rate", "word problem"]
             }
         }
-    
+
     @staticmethod
     def generate_examples(count: int) -> List[Dict[str, Any]]:
         """Generate multiple math examples."""
@@ -205,18 +205,18 @@ class MathGenerator:
             MathGenerator.generate_geometry_problem,
             MathGenerator.generate_proportion_problem
         ]
-        
+
         examples = []
         attempts = 0
         max_attempts = count * 3
-        
+
         while len(examples) < count and attempts < max_attempts:
             generator = random.choice(generators)
             example = generator()
             if example:
                 examples.append(example)
             attempts += 1
-        
+
         return examples
 
 
@@ -226,7 +226,7 @@ class MathGenerator:
 
 class CodeGenerator:
     """Generate code reasoning problems."""
-    
+
     @staticmethod
     def generate_python_output():
         """Generate Python code output problems."""
@@ -247,12 +247,12 @@ class CodeGenerator:
                 "n": random.randint(5, 10)
             }
         ]
-        
+
         template = random.choice(templates)
         n = template['n']
         code = template['code'].format(n=n)
         answer = template['answer'](n)
-        
+
         return {
             "question": f"What does this Python code output: `print({code})`? Trace through the execution.",
             "answer": answer,
@@ -265,7 +265,7 @@ class CodeGenerator:
                 "keywords": ["python", "output", "list comprehension"]
             }
         }
-    
+
     @staticmethod
     def generate_debugging_problem():
         """Generate code debugging problems."""
@@ -286,9 +286,9 @@ class CodeGenerator:
                 "corrected": "list = [1, 2, 3]; list.append(4)"
             }
         ]
-        
+
         bug = random.choice(bugs)
-        
+
         return {
             "question": f"Debug this code: `{bug['code']}`. What's wrong and what's the fix?",
             "answer": f"{bug['fix']}. Corrected: {bug['corrected']}",
@@ -301,7 +301,7 @@ class CodeGenerator:
                 "keywords": ["debugging", "syntax error", "python"]
             }
         }
-    
+
     @staticmethod
     def generate_complexity_problem():
         """Generate algorithm complexity problems."""
@@ -327,9 +327,9 @@ class CodeGenerator:
                 "reason": "divides array recursively (log n) and merges (n)"
             }
         ]
-        
+
         algo = random.choice(algorithms)
-        
+
         return {
             "question": f"What's the time complexity of {algo['name']}? Explain why.",
             "answer": f"{algo['complexity']} because it {algo['reason']}",
@@ -342,7 +342,7 @@ class CodeGenerator:
                 "keywords": ["time complexity", algo['name'], "algorithms"]
             }
         }
-    
+
     @staticmethod
     def generate_examples(count: int) -> List[Dict[str, Any]]:
         """Generate multiple code examples."""
@@ -351,12 +351,12 @@ class CodeGenerator:
             CodeGenerator.generate_debugging_problem,
             CodeGenerator.generate_complexity_problem
         ]
-        
+
         examples = []
         for _ in range(count):
             generator = random.choice(generators)
             examples.append(generator())
-        
+
         return examples
 
 
@@ -366,7 +366,7 @@ class CodeGenerator:
 
 class ScienceGenerator:
     """Generate science reasoning problems."""
-    
+
     @staticmethod
     def generate_physics_problem():
         """Generate physics problems."""
@@ -387,9 +387,9 @@ class ScienceGenerator:
                 "domain": "physics"
             }
         ]
-        
+
         problem = random.choice(problems)
-        
+
         return {
             "question": problem['question'] + " Explain the reasoning.",
             "answer": problem['answer'],
@@ -402,7 +402,7 @@ class ScienceGenerator:
                 "keywords": ["physics", "explanation", "principles"]
             }
         }
-    
+
     @staticmethod
     def generate_chemistry_problem():
         """Generate chemistry problems."""
@@ -423,9 +423,9 @@ class ScienceGenerator:
                 "domain": "chemistry"
             }
         ]
-        
+
         problem = random.choice(problems)
-        
+
         return {
             "question": problem['question'] + " Explain at the molecular level.",
             "answer": problem['answer'],
@@ -438,7 +438,7 @@ class ScienceGenerator:
                 "keywords": ["chemistry", "molecular", "explanation"]
             }
         }
-    
+
     @staticmethod
     def generate_biology_problem():
         """Generate biology problems."""
@@ -459,9 +459,9 @@ class ScienceGenerator:
                 "domain": "biology"
             }
         ]
-        
+
         problem = random.choice(problems)
-        
+
         return {
             "question": problem['question'] + " Explain the biological reasoning.",
             "answer": problem['answer'],
@@ -474,7 +474,7 @@ class ScienceGenerator:
                 "keywords": ["biology", "explanation", "process"]
             }
         }
-    
+
     @staticmethod
     def generate_examples(count: int) -> List[Dict[str, Any]]:
         """Generate multiple science examples."""
@@ -483,12 +483,12 @@ class ScienceGenerator:
             ScienceGenerator.generate_chemistry_problem,
             ScienceGenerator.generate_biology_problem
         ]
-        
+
         examples = []
         for _ in range(count):
             generator = random.choice(generators)
             examples.append(generator())
-        
+
         return examples
 
 
@@ -498,12 +498,12 @@ class ScienceGenerator:
 
 class LogicGenerator:
     """Generate logic puzzles."""
-    
+
     @staticmethod
     def generate_weighing_problem():
         """Generate balance scale problems."""
         n_balls = random.choice([8, 9, 12])
-        
+
         if n_balls == 8:
             answer = "2 weighings"
             explanation = "Divide into 3-3-2. Weigh first two groups. If balanced, heavy is in remaining 2 (1 weighing). If unbalanced, divide heavier group of 3 and weigh any two"
@@ -513,7 +513,7 @@ class LogicGenerator:
         else:  # 12
             answer = "3 weighings"
             explanation = "Divide into 4-4-4. First weighing identifies heavy group. Second weighing narrows to 2 balls. Third weighing identifies the heavy one"
-        
+
         return {
             "question": f"You have {n_balls} balls, one slightly heavier. You have a balance scale. What's the minimum weighings to find the heavy ball? Explain your strategy.",
             "answer": f"{answer}. {explanation}",
@@ -526,7 +526,7 @@ class LogicGenerator:
                 "keywords": ["weighing", "optimization", "strategy"]
             }
         }
-    
+
     @staticmethod
     def generate_syllogism():
         """Generate syllogism problems."""
@@ -536,9 +536,9 @@ class LogicGenerator:
             ("widgets", "gadgets", "doodads"),
             ("snorfs", "morfles", "borfles")
         ]
-        
+
         a, b, c = random.choice(creatures)
-        
+
         return {
             "question": f"If all {a} are {b} and all {b} are {c}, are all {a} definitely {c}? Explain your logical reasoning.",
             "answer": f"Yes, by transitive property: {a} → {b} → {c}, therefore {a} → {c}",
@@ -551,7 +551,7 @@ class LogicGenerator:
                 "keywords": ["syllogism", "logic", "transitivity"]
             }
         }
-    
+
     @staticmethod
     def generate_truth_teller():
         """Generate truth-teller/liar problems."""
@@ -567,9 +567,9 @@ class LogicGenerator:
                 "difficulty": "hard"
             }
         ]
-        
+
         scenario = random.choice(scenarios)
-        
+
         return {
             "question": scenario['question'] + " Show your reasoning.",
             "answer": scenario['answer'],
@@ -582,7 +582,7 @@ class LogicGenerator:
                 "keywords": ["logic", "truth", "deduction"]
             }
         }
-    
+
     @staticmethod
     def generate_examples(count: int) -> List[Dict[str, Any]]:
         """Generate multiple logic examples."""
@@ -591,12 +591,12 @@ class LogicGenerator:
             LogicGenerator.generate_syllogism,
             LogicGenerator.generate_truth_teller
         ]
-        
+
         examples = []
         for _ in range(count):
             generator = random.choice(generators)
             examples.append(generator())
-        
+
         return examples
 
 
@@ -606,7 +606,7 @@ class LogicGenerator:
 
 class CreativeGenerator:
     """Generate creative writing and ideation tasks."""
-    
+
     @staticmethod
     def generate_story_opening():
         """Generate story opening prompts."""
@@ -617,9 +617,9 @@ class CreativeGenerator:
             "a world where everyone hears a unique soundtrack to their life",
             "a planet where time flows differently in each region"
         ]
-        
+
         scenario = random.choice(scenarios)
-        
+
         return {
             "question": f"Write a creative opening paragraph for a story about {scenario}. Show your creative reasoning process.",
             "answer": "[Creative opening paragraph that establishes the unique world mechanic, introduces a character in a moment of tension, and creates immediate stakes]",
@@ -632,7 +632,7 @@ class CreativeGenerator:
                 "keywords": ["creative writing", "world-building", "opening"]
             }
         }
-    
+
     @staticmethod
     def generate_metaphor():
         """Generate metaphor creation tasks."""
@@ -643,9 +643,9 @@ class CreativeGenerator:
             ("democracy", "potluck dinner"),
             ("education", "gardening")
         ]
-        
+
         concept, comparison = random.choice(concepts)
-        
+
         return {
             "question": f"Create a metaphor that explains {concept} to someone unfamiliar with it. Explain your creative choices.",
             "answer": f"[Metaphor comparing {concept} to {comparison}, with explanation of why this comparison illuminates key aspects]",
@@ -658,7 +658,7 @@ class CreativeGenerator:
                 "keywords": ["metaphor", "explanation", "creativity"]
             }
         }
-    
+
     @staticmethod
     def generate_invention():
         """Generate invention/innovation tasks."""
@@ -669,12 +669,12 @@ class CreativeGenerator:
             "encourage children to exercise",
             "reduce plastic usage in daily life"
         ]
-        
+
         problem = random.choice(problems)
-        
+
         return {
             "question": f"Design an innovative solution to {problem}. Explain your key features and the reasoning behind them.",
-            "answer": f"[Solution description with 3-4 key features, each with reasoning for how it addresses the problem]",
+            "answer": "[Solution description with 3-4 key features, each with reasoning for how it addresses the problem]",
             "type": "creative_ideation",
             "difficulty": "hard",
             "domain": "innovation",
@@ -684,7 +684,7 @@ class CreativeGenerator:
                 "keywords": ["innovation", "problem-solving", "design"]
             }
         }
-    
+
     @staticmethod
     def generate_examples(count: int) -> List[Dict[str, Any]]:
         """Generate multiple creative examples."""
@@ -693,12 +693,12 @@ class CreativeGenerator:
             CreativeGenerator.generate_metaphor,
             CreativeGenerator.generate_invention
         ]
-        
+
         examples = []
         for _ in range(count):
             generator = random.choice(generators)
             examples.append(generator())
-        
+
         return examples
 
 
@@ -708,7 +708,7 @@ class CreativeGenerator:
 
 class SummarizationGenerator:
     """Generate summarization tasks."""
-    
+
     @staticmethod
     def generate_technical_summary():
         """Generate technical text summarization."""
@@ -722,9 +722,9 @@ class SummarizationGenerator:
                 "answer": "Blockchain is a distributed, tamper-resistant ledger system where transaction data is stored in cryptographically linked blocks across multiple computers."
             }
         ]
-        
+
         item = random.choice(texts)
-        
+
         return {
             "question": f"Summarize the following in simple terms: '{item['text']}' Show your reasoning for what to emphasize.",
             "answer": item['answer'],
@@ -737,14 +737,14 @@ class SummarizationGenerator:
                 "keywords": ["summarization", "technical", "simplification"]
             }
         }
-    
+
     @staticmethod
     def generate_examples(count: int) -> List[Dict[str, Any]]:
         """Generate multiple summarization examples."""
         examples = []
         for _ in range(count):
             examples.append(SummarizationGenerator.generate_technical_summary())
-        
+
         return examples
 
 
@@ -754,11 +754,10 @@ class SummarizationGenerator:
 
 class TrainingDataGenerator:
     """Main class for generating complete training dataset."""
-    
+
     def __init__(self, target_distribution: Dict[str, float] = None):
-        """
-        Initialize generator with target distribution.
-        
+        """Initialize generator with target distribution.
+
         Args:
             target_distribution: Dict mapping type to percentage (e.g., {'math': 0.4})
         """
@@ -770,94 +769,93 @@ class TrainingDataGenerator:
             'creative': 0.10,
             'summarization': 0.05
         }
-    
+
     def generate(self, total_count: int) -> List[Dict[str, Any]]:
-        """
-        Generate complete training dataset.
-        
+        """Generate complete training dataset.
+
         Args:
             total_count: Total number of examples to generate
-            
+
         Returns:
             List of training examples
         """
         examples = []
-        
+
         # Calculate counts per type
         type_counts = {
             type_name: int(total_count * percentage)
             for type_name, percentage in self.target_distribution.items()
         }
-        
+
         print(f"Generating {total_count} training examples...")
         print(f"Distribution: {type_counts}")
-        
+
         # Generate math examples
         print(f"Generating {type_counts['math']} math examples...")
         examples.extend(MathGenerator.generate_examples(type_counts['math']))
-        
+
         # Generate code examples
         print(f"Generating {type_counts['code']} code examples...")
         examples.extend(CodeGenerator.generate_examples(type_counts['code']))
-        
+
         # Generate logic puzzles
         print(f"Generating {type_counts['logic_puzzle']} logic puzzles...")
         examples.extend(LogicGenerator.generate_examples(type_counts['logic_puzzle']))
-        
+
         # Generate science examples
         print(f"Generating {type_counts['science']} science examples...")
         examples.extend(ScienceGenerator.generate_examples(type_counts['science']))
-        
+
         # Generate creative examples
         print(f"Generating {type_counts['creative']} creative examples...")
         examples.extend(CreativeGenerator.generate_examples(type_counts['creative']))
-        
+
         # Generate summarization examples
         print(f"Generating {type_counts['summarization']} summarization examples...")
         examples.extend(SummarizationGenerator.generate_examples(type_counts['summarization']))
-        
+
         # Shuffle examples
         random.shuffle(examples)
-        
+
         print(f"✅ Generated {len(examples)} total examples")
-        
+
         return examples
-    
+
     def save_to_file(self, examples: List[Dict[str, Any]], filename: str):
         """Save examples to JSON file."""
         with open(filename, 'w') as f:
             json.dump(examples, f, indent=2)
         print(f"✅ Saved {len(examples)} examples to {filename}")
-    
+
     def get_statistics(self, examples: List[Dict[str, Any]]):
         """Print dataset statistics."""
         from collections import Counter
-        
+
         print("\n" + "="*80)
         print("DATASET STATISTICS")
         print("="*80)
-        
+
         print(f"\nTotal examples: {len(examples)}")
-        
+
         # Type distribution
         types = Counter(ex['type'] for ex in examples)
         print("\nBy type:")
         for type_name, count in types.most_common():
             percentage = count / len(examples) * 100
             print(f"  {type_name}: {count} ({percentage:.1f}%)")
-        
+
         # Difficulty distribution
         difficulties = Counter(ex['difficulty'] for ex in examples)
         print("\nBy difficulty:")
         for diff, count in difficulties.most_common():
             percentage = count / len(examples) * 100
             print(f"  {diff}: {count} ({percentage:.1f}%)")
-        
+
         # Verification status
         verifiable = sum(1 for ex in examples if ex['metadata'].get('verification') == 'verifiable')
         print(f"\nVerifiable: {verifiable} ({verifiable/len(examples)*100:.1f}%)")
         print(f"Non-verifiable: {len(examples) - verifiable} ({(len(examples)-verifiable)/len(examples)*100:.1f}%)")
-        
+
         print("="*80 + "\n")
 
 
@@ -888,24 +886,24 @@ def main():
         default=42,
         help='Random seed for reproducibility (default: 42)'
     )
-    
+
     args = parser.parse_args()
-    
+
     # Set random seed
     random.seed(args.seed)
-    
+
     # Generate data
     generator = TrainingDataGenerator()
     examples = generator.generate(args.count)
-    
+
     # Save to file
     generator.save_to_file(examples, args.output)
-    
+
     # Print statistics
     generator.get_statistics(examples)
-    
+
     print(f"✨ Done! Dataset saved to {args.output}")
-    print(f"Upload this file to Kaggle and use in your notebook.")
+    print("Upload this file to Kaggle and use in your notebook.")
 
 
 if __name__ == '__main__':
