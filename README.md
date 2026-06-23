@@ -32,7 +32,9 @@
 
 ## Overview
 
-Traditional language models often jump straight to answers without explanation. This project trains **Gemma2 2B** using Google's **Tunix library** to produce explicit reasoning traces before answering questions, making AI more **transparent**, **trustworthy**, and **debuggable**.
+Traditional language models often jump straight to answers without explanation. This project trains **Gemma 3 1B** using Google's **Tunix library** to produce explicit reasoning traces before answering questions, making AI more **transparent**, **trustworthy**, and **debuggable**.
+
+The training notebook ([`tunix_reasoning_trainer.ipynb`](tunix_reasoning_trainer.ipynb)) is a **real, fully-wired GRPO loop** built on Tunix's `RLCluster` and `GRPOLearner` — it actually updates the model's LoRA weights — and is designed to run on a **free-tier Google Colab** accelerator (T4 GPU or TPU).
 
 ### The Problem
 
@@ -80,42 +82,44 @@ GRPO is a reinforcement learning algorithm for LLM alignment that:
 - Uses relative advantages within the group (no value function needed)
 - More memory-efficient than PPO
 
-### Key Parameters
+### Key Parameters (Tunix `GRPOConfig` / rollout)
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `num_generations` | 4 | Responses generated per prompt |
-| `learning_rate` | 1e-6 | Training learning rate |
-| `kl_coef` | 0.1 | KL divergence coefficient |
-| `clip_range` | 0.2 | PPO-style clipping range |
+| `num_generations` | 2 | Responses sampled per prompt (the group `G`) |
+| `beta` | 0.08 | KL penalty toward the frozen reference model |
+| `epsilon` | 0.2 | PPO-style clip range |
+| `learning_rate` | 3e-6 | AdamW peak learning rate (warmup + cosine decay) |
+| `temperature` | 0.9 | Rollout sampling temperature |
 
 ---
 
 ## Quick Start
 
-### Option 1: Run on Kaggle (Recommended)
+### Option 1: Run on Google Colab (Recommended)
 
-1. Open `tunix_reasoning_trainer.ipynb` in Kaggle
-2. Enable **TPU v3-8** accelerator
-3. Accept Gemma license on Kaggle
-4. Upload `reasoning_training_data.json` as dataset
-5. Run all cells
+1. Open [`tunix_reasoning_trainer.ipynb`](tunix_reasoning_trainer.ipynb) in Colab
+   (use the **Open in Colab** badge at the top of the notebook).
+2. **Runtime → Change runtime type → T4 GPU** (or a TPU runtime).
+3. Accept the [Gemma license on Hugging Face](https://huggingface.co/google/gemma-3-1b-it)
+   and create a read token.
+4. Run all cells top to bottom. Pick the dataset with the `DATASET` flag
+   (`"gsm8k"` — the proven default — or `"repo"` to use this project's own data).
 
-### Option 2: Local Setup
+The notebook does a short validation run (`MAX_STEPS = 30`) out of the box;
+raise `MAX_STEPS` / `NUM_TRAIN_BATCHES` for a meaningful quality improvement.
+
+### Option 2: Local development (no accelerator needed)
+
+The reward functions and data generator are pure Python and fully testable
+without a GPU/TPU:
 
 ```bash
-# Clone the repository
 git clone https://github.com/aabhimittal/Training-Reasoning-Models-with-Tunix-GRPO.git
 cd Training-Reasoning-Models-with-Tunix-GRPO
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Generate training data (optional)
-python generate_training_data.py --count 1000 --output reasoning_training_data.json
-
-# Open the notebook
-jupyter notebook tunix_reasoning_trainer.ipynb
+./setup.sh                                       # venv + dev deps + tests
+python generate_training_data.py --count 1000    # (re)generate training data
 ```
 
 ---
@@ -127,57 +131,56 @@ jupyter notebook tunix_reasoning_trainer.ipynb
 > library — no installation is needed to run or test them. The dependencies
 > below are only required to *train* the model on an accelerator.
 
-### Training requirements (`requirements.txt`)
+### Training stack
 
-```txt
-jax>=0.4.20          # install the build matching your hardware (see below)
-keras>=3.0.0
-keras-nlp>=0.8.0
-numpy>=1.24.0
-matplotlib>=3.7.0
-tqdm>=4.65.0
-kagglehub>=0.2.0
-```
-
-Pick the JAX build for your hardware:
+The Colab notebook installs everything it needs in its first cell (it pins
+JAX / Flax / Tunix / Qwix to source builds, matching the official Tunix GRPO
+demo). If you want to set the environment up yourself:
 
 ```bash
-# TPU (recommended)
-pip install "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
-# NVIDIA GPU
-pip install "jax[cuda12]"
-# CPU only (slow, for smoke tests)
-pip install jax
+pip install kagglehub tensorflow tensorflow_datasets grain \
+    transformers huggingface_hub datasets "numpy>2"
+pip install git+https://github.com/jax-ml/jax
+pip install git+https://github.com/google/tunix
+pip install git+https://github.com/google/qwix
+pip install git+https://github.com/google/flax
 ```
 
-### Install Tunix
-
-```bash
-pip install git+https://github.com/google/tunix.git
-```
+> JAX picks up the accelerator (TPU/GPU) provided by the Colab runtime
+> automatically; you don't install a hardware-specific JAX build on Colab.
 
 ---
 
 ## Usage
 
-### Training the Model
+### Training the model (inside the notebook)
+
+The notebook wires Tunix's real GRPO components together:
 
 ```python
-config = GRPOConfig(
-    num_generations=4,
-    learning_rate=1e-6,
-    num_training_steps=500,
-    batch_size=4
+from tunix.rl import rl_cluster as rl_cluster_lib
+from tunix.rl.grpo.grpo_learner import GRPOConfig, GRPOLearner
+
+# RLCluster holds the trainable LoRA actor, the frozen reference, and tokenizer.
+rl_cluster = rl_cluster_lib.RLCluster(
+    actor=lora_policy,
+    reference=gemma3,
+    tokenizer=tokenizer,
+    cluster_config=cluster_config,
 )
 
-trainer = GRPOTrainer(
-    model=gemma_lm,
-    config=config,
-    training_data=training_data
+grpo_trainer = GRPOLearner(
+    rl_cluster=rl_cluster,
+    reward_fns=[reward_format, reward_correctness, reward_reasoning_quality],
+    algo_config=GRPOConfig(num_generations=2, num_iterations=1, beta=0.08, epsilon=0.2),
 )
 
-trainer.train(num_steps=500)
+grpo_trainer.train(train_dataset, val_dataset)   # actually updates LoRA weights
 ```
+
+The three `reward_fns` reuse this project's tested
+[`reasoning_rewards.py`](reasoning_rewards.py) library, so the notebook and the
+unit tests share one implementation.
 
 ### Generating Training Data
 
@@ -189,24 +192,21 @@ python generate_training_data.py --count 1000 --output reasoning_training_data.j
 
 ## Configuration
 
-Key hyperparameters in `GRPOConfig`:
+The notebook's **Configuration** cell exposes the key knobs. Free-tier-friendly
+defaults (tuned for a 16 GB T4) are shown below:
 
-```python
-@dataclass
-class GRPOConfig:
-    num_generations: int = 4
-    max_prompt_length: int = 256
-    max_response_length: int = 512
-    learning_rate: float = 1e-6
-    num_training_steps: int = 500
-    batch_size: int = 4
-    kl_coef: float = 0.1
-    clip_range: float = 0.2
-    temperature: float = 0.9
-    format_reward_weight: float = 0.3
-    correctness_reward_weight: float = 0.5
-    reasoning_quality_weight: float = 0.2
-```
+| Setting | Default | Notes |
+|---------|---------|-------|
+| `MODEL_ID` | `google/gemma-3-1b-it` | Gated; accept the license on Hugging Face |
+| `DATASET` | `"gsm8k"` | or `"repo"` for this project's own data |
+| `RANK` / `ALPHA` | 32 / 64 | LoRA adapter size |
+| `NUM_GENERATIONS` | 2 | Responses per prompt |
+| `TRAIN_MICRO_BATCH_SIZE` | 1 | Keep at 1 on free tier |
+| `MAX_PROMPT_LENGTH` | 256 | Prompt token budget |
+| `TOTAL_GENERATION_STEPS` | 512 | Response token budget |
+| `MAX_STEPS` | 30 | Bump to 300–1000 for real gains |
+| `LEARNING_RATE` | 3e-6 | AdamW peak (warmup + cosine decay) |
+| `BETA` / `EPSILON` | 0.08 / 0.2 | KL penalty / clip range |
 
 ---
 

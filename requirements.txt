@@ -2,29 +2,24 @@
 #
 # NOTE: The reward functions (reasoning_rewards.py) and the data generator
 # (generate_training_data.py) use only the Python standard library, so you do
-# NOT need to install anything to run or test those.
+# NOT need to install anything to run or test those (see requirements-dev.txt).
 #
-# These packages are only required for model training on accelerators.
-# On Kaggle/Colab TPU these are typically pre-installed.
+# The notebook installs this stack itself in its first cell. These pins mirror
+# the official Tunix GRPO demo; on Colab/Kaggle most are pre-installed and JAX
+# auto-detects the TPU/GPU runtime.
 
-# JAX backend. Install the build that matches your hardware, e.g.:
-#   pip install "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html
-#   pip install "jax[cuda12]"   # for NVIDIA GPUs
-#   pip install jax             # CPU-only (slow; for smoke tests)
-jax>=0.4.20
-
-# Model loading and the Gemma2 preset.
-keras>=3.0.0
-keras-nlp>=0.8.0
-
-# Numerics, progress bars, and plotting.
-numpy>=1.24.0
-matplotlib>=3.7.0
-tqdm>=4.65.0
-
-# Kaggle model downloads (used inside the notebook).
+# Data, tokenization, and utilities.
 kagglehub>=0.2.0
+tensorflow>=2.15.0
+tensorflow_datasets>=4.9.0
+grain>=0.2.0
+transformers>=4.40.0
+huggingface_hub>=0.23.0
+datasets>=2.19.0
+numpy>2
 
-# GRPO trainer. Installed from source:
-#   pip install git+https://github.com/google/tunix.git
-# tunix @ git+https://github.com/google/tunix.git
+# JAX + Tunix post-training stack (installed from source in the notebook):
+#   pip install git+https://github.com/jax-ml/jax
+#   pip install git+https://github.com/google/tunix
+#   pip install git+https://github.com/google/qwix
+#   pip install git+https://github.com/google/flax
